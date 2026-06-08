@@ -1,0 +1,54 @@
+# ══════════════════════════════════════════════════════════════════
+#  RoboLearn AI — Hybrid RAG + Knowledge Graph Assistant
+#  requirements.txt  (all versions verified compatible, June 2025)
+#  Install: pip install -r requirements.txt
+#  Then:    python -m spacy download en_core_web_sm
+# ══════════════════════════════════════════════════════════════════
+
+# ── Core / Config ─────────────────────────────────────────────────
+python-dotenv==1.1.0
+pydantic==2.11.5
+pydantic-settings==2.14.1
+loguru==0.7.3
+
+# ── Document ingestion ────────────────────────────────────────────
+pdfplumber==0.11.9
+pypdf2==3.0.1
+python-docx==1.2.0
+unstructured==0.22.31
+
+# ── LangChain (text splitting only) ───────────────────────────────
+# NOTE: langchain 1.3.x requires langchain-core>=1.4.0
+langchain==1.3.4
+langchain-core==1.4.1
+langchain-text-splitters==1.1.2
+
+# ── Embeddings ────────────────────────────────────────────────────
+sentence-transformers==5.5.1
+torch==2.7.1
+numpy==1.26.4               # pinned — faiss-cpu breaks on numpy 2.x
+
+# ── Vector store ──────────────────────────────────────────────────
+faiss-cpu==1.11.0
+
+# ── Knowledge graph ───────────────────────────────────────────────
+neo4j==5.28.4
+networkx==3.6.1
+
+# ── NLP ───────────────────────────────────────────────────────────
+spacy==3.8.14
+# After install run: python -m spacy download en_core_web_sm
+
+# ── LLM providers ─────────────────────────────────────────────────
+anthropic==0.107.1
+groq==1.4.0                 # Groq SDK — fast LLM inference
+openai==2.41.0              # optional — only needed if LLM_PROVIDER=openai
+
+# ── UI ────────────────────────────────────────────────────────────
+streamlit==1.58.0
+plotly==6.8.0
+pyvis==0.3.2
+
+# ── Dev / testing ─────────────────────────────────────────────────
+pytest==8.4.0
+black==25.1.0
