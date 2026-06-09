@@ -106,7 +106,11 @@ if "messages" not in st.session_state:
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
-        if msg.get("sources") and show_sources:
+        if msg.get("source_pages") and show_sources:
+            with st.expander(f"📄 Document sources ({len(msg['source_pages'])} chunks)"):
+                for sp in msg["source_pages"]:
+                    st.markdown(f"`[{sp['n']}]` **{sp['file']}** — page {sp['page']}")
+        elif msg.get("sources") and show_sources:
             with st.expander("📄 Document sources"):
                 for s in msg["sources"]:
                     st.caption(s)
@@ -156,21 +160,22 @@ if query := st.chat_input("Ask about robotics, electronics, ROS, Arduino… or j
 
                     st.markdown(answer.answer)
 
-                    if show_sources and answer.sources:
-                        with st.expander("📄 Document sources"):
-                            for s in set(answer.sources):
-                                st.caption(s)
+                    if show_sources and answer.source_pages:
+                        with st.expander(f"📄 Document sources ({len(answer.source_pages)} chunks)"):
+                            for sp in answer.source_pages:
+                                st.markdown(f"`[{sp['n']}]` **{sp['file']}** — page {sp['page']}")
 
                     if show_triples and answer.graph_triples_used:
-                        with st.expander("🔗 Knowledge graph triples"):
+                        with st.expander(f"🔗 Knowledge graph triples ({len(answer.graph_triples_used)})"):
                             for t in answer.graph_triples_used:
                                 st.code(t, language=None)
 
                     st.session_state.messages.append({
-                        "role":    "assistant",
-                        "content": answer.answer,
-                        "sources": list(set(answer.sources)),
-                        "triples": answer.graph_triples_used,
+                        "role":         "assistant",
+                        "content":      answer.answer,
+                        "sources":      list(set(answer.sources)),
+                        "source_pages": answer.source_pages,
+                        "triples":      answer.graph_triples_used,
                     })
 
                 except FileNotFoundError:
