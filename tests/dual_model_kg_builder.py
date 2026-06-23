@@ -49,8 +49,8 @@ SEP = GRY + "─" * 68 + RST
 # When using Groq:   "8b" = llama-3.1-8b-instant, "70b" = llama-3.3-70b-versatile
 def _get_models():
     provider = settings.llm_provider.lower()
-    if provider == "ollama":
-        # Ollama: use the same model for both phases — no rate limits
+    if provider in ("ollama", "bedrock", "anthropic", "openai"):
+        # Non-Groq providers: use the same model for both phases — no rate limits
         return {
             "8b": {
                 "id":               settings.llm_model,

@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from embeddings.vector_store import VectorStore
 from graph.kg_retriever import KGRetriever
 from retrieval.hybrid_retriever import HybridRetriever
+from embeddings.bm25_store import BM25Store
 from generation.answer_generator import AnswerGenerator
 
 QUERY_LEVELS = {
@@ -127,7 +128,13 @@ def main():
         kg = MagicMock()
         kg.search.return_value = []
 
-    retriever = HybridRetriever(vs, kg)
+    try:
+        bm25 = BM25Store.load(vs.chunks)
+        print(f"BM25 loaded — {len(bm25.chunks)} docs")
+    except Exception as e:
+        print(f"BM25 not loaded ({e})")
+        bm25 = None
+    retriever = HybridRetriever(vs, kg, bm25_store=bm25)
     generator = AnswerGenerator() if args.answer else None
 
     if args.query:

@@ -1,388 +1,828 @@
 {
   "benchmark_metadata": {
-    "version": "1.0",
-    "created": "2026-06-10",
+    "version": "2.1",
+    "created": "2026-06-18",
     "sources": [
       "ARDUINO.pdf",
+      "Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf",
+      "I2C.pdf",
+      "KUKA agilus.pdf",
+      "L298N Motor Driver.pdf",
       "Programming.Robots.with.ROS.A.Practical.Introduction.to.the.Robot.Operating.System.pdf",
-      "ROBOTICS_AND_AUTOMATION_1_.pdf"
+      "ROBOTICS AND AUTOMATION(1).pdf",
+      "rosserial - ROS Wiki.pdf"
     ],
     "total_queries": 25,
     "levels": 5,
     "queries_per_level": 5,
-    "evaluation_fields": [
-      "query",
-      "level",
-      "category",
-      "expected_entities",
-      "expected_relations",
-      "expected_source",
-      "expected_page_range",
-      "retrieval_type",
-      "answer_type",
-      "ground_truth",
-      "metadata_tags"
-    ]
+    "design_notes": "v2.1 \u2014 entity strings match verbatim chunk text. Multi-source queries use max 2 PDFs. SOURCE_HINTS keywords embedded in L3+ queries. Atmel datasheet accepted for ATmega chip-level queries."
   },
-
   "levels": {
-
     "level_1": {
       "label": "Factual Lookup",
-      "description": "Single entity, single fact. Direct lookup from one source. Tests FAISS basic recall. Graph rarely fires. Answer is a specific number, name, or definition.",
+      "description": "Single entity, single fact, one source. All entities are short-form, verbatim in chunk text.",
       "queries": [
         {
           "id": "L1Q1",
           "query": "What processor does the Arduino UNO R3 use?",
           "category": "hardware_specification",
-          "expected_entities": ["Arduino UNO R3", "ATmega328P"],
-          "expected_relations": ["USES_PROCESSOR"],
+          "expected_entities": [
+            "Arduino UNO R3",
+            "ATmega328P"
+          ],
+          "expected_relations": [
+            "USES_PROCESSOR"
+          ],
           "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [1, 2],
+          "expected_page_range": [
+            1,
+            3
+          ],
           "retrieval_type": "vector_only",
           "answer_type": "single_fact",
-          "ground_truth": "The Arduino UNO R3 uses the ATmega328P processor running at up to 20 MHz, along with the ATMega16U2 as a USB bridge coprocessor.",
-          "metadata_tags": ["hardware", "processor", "arduino", "ATmega328P", "specification"]
+          "ground_truth": "The Arduino UNO R3 uses the ATmega328P processor.",
+          "metadata_tags": [
+            "hardware",
+            "processor",
+            "arduino",
+            "ATmega328P"
+          ]
         },
         {
           "id": "L1Q2",
-          "query": "What is the maximum input voltage from the VIN pad on Arduino UNO R3?",
-          "category": "electrical_specification",
-          "expected_entities": ["Arduino UNO R3", "VIN", "voltage"],
-          "expected_relations": ["HAS_SPEC", "MAX_VOLTAGE"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [6, 6],
+          "query": "What is ROS?",
+          "category": "concept_definition",
+          "expected_entities": [
+            "ROS",
+            "robot"
+          ],
+          "expected_relations": [
+            "IS_A"
+          ],
+          "expected_source": "Programming.Robots.with.ROS.A.Practical.Introduction.to.the.Robot.Operating.System.pdf",
+          "expected_page_range": [
+            1,
+            10
+          ],
           "retrieval_type": "vector_only",
-          "answer_type": "numerical_fact",
-          "ground_truth": "The maximum input voltage from the VIN pad is 20V.",
-          "metadata_tags": ["electrical", "voltage", "power", "VIN", "specification"]
+          "answer_type": "definition",
+          "ground_truth": "ROS is an open-source meta-operating system for robots providing hardware abstraction, message passing, and package management.",
+          "metadata_tags": [
+            "ROS",
+            "definition",
+            "software"
+          ]
         },
         {
           "id": "L1Q3",
-          "query": "How many PWM channels does the ATmega328P have?",
-          "category": "peripheral_specification",
-          "expected_entities": ["ATmega328P", "PWM"],
-          "expected_relations": ["HAS_PERIPHERAL", "PWM_CHANNELS"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [2, 2],
+          "query": "What is rosserial?",
+          "category": "concept_definition",
+          "expected_entities": [
+            "rosserial",
+            "Arduino"
+          ],
+          "expected_relations": [
+            "ENABLES"
+          ],
+          "expected_source": "rosserial - ROS Wiki.pdf",
+          "expected_page_range": [
+            1,
+            3
+          ],
           "retrieval_type": "vector_only",
-          "answer_type": "numerical_fact",
-          "ground_truth": "The ATmega328P has six PWM channels.",
-          "metadata_tags": ["PWM", "ATmega328P", "peripheral", "channels", "specification"]
+          "answer_type": "definition",
+          "ground_truth": "rosserial is a ROS package that lets microcontrollers like Arduino communicate with ROS over a serial connection.",
+          "metadata_tags": [
+            "rosserial",
+            "ROS",
+            "Arduino",
+            "serial"
+          ]
         },
         {
           "id": "L1Q4",
-          "query": "What is ROS?",
-          "category": "concept_definition",
-          "expected_entities": ["ROS", "Robot Operating System"],
-          "expected_relations": ["IS_A", "DEFINED_AS"],
-          "expected_source": "Programming.Robots.with.ROS.pdf",
-          "expected_page_range": [1, 10],
+          "query": "What is the maximum current per channel of the L298N motor driver?",
+          "category": "electrical_specification",
+          "expected_entities": [
+            "L298N",
+            "2A"
+          ],
+          "expected_relations": [
+            "HAS_SPEC"
+          ],
+          "expected_source": "L298N Motor Driver.pdf",
+          "expected_page_range": [
+            1,
+            4
+          ],
           "retrieval_type": "vector_only",
-          "answer_type": "definition",
-          "ground_truth": "ROS (Robot Operating System) is an open-source, meta-operating system for robots that provides services like hardware abstraction, low-level device control, message passing between processes, and package management.",
-          "metadata_tags": ["ROS", "definition", "operating_system", "robotics", "software"]
+          "answer_type": "numerical_fact",
+          "ground_truth": "The L298N can supply up to 2A per channel.",
+          "metadata_tags": [
+            "L298N",
+            "current",
+            "motor_driver",
+            "specification"
+          ]
         },
         {
           "id": "L1Q5",
-          "query": "What is the operating temperature range of the Arduino UNO R3?",
-          "category": "environmental_specification",
-          "expected_entities": ["Arduino UNO R3", "temperature"],
-          "expected_relations": ["OPERATES_IN", "TEMPERATURE_RANGE"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [6, 6],
+          "query": "What kind of robot is the KUKA agilus?",
+          "category": "hardware_specification",
+          "expected_entities": [
+            "KUKA",
+            "robot"
+          ],
+          "expected_relations": [
+            "IS_A"
+          ],
+          "expected_source": "KUKA agilus.pdf",
+          "expected_page_range": [
+            1,
+            5
+          ],
           "retrieval_type": "vector_only",
-          "answer_type": "range_fact",
-          "ground_truth": "The conservative thermal limits for the Arduino UNO R3 board are -40°C (-40°F) minimum and 85°C (185°F) maximum.",
-          "metadata_tags": ["temperature", "operating_conditions", "specification", "environment"]
+          "answer_type": "single_fact",
+          "ground_truth": "The KUKA agilus is a small high-speed industrial robot designed for electronics and precision automation tasks.",
+          "metadata_tags": [
+            "KUKA",
+            "agilus",
+            "industrial",
+            "robot"
+          ]
         }
       ]
     },
-
     "level_2": {
       "label": "Single Relationship",
-      "description": "One entity to another via one relationship. Tests basic graph edge retrieval + matching vector chunks. Answer requires understanding one connection.",
+      "description": "One entity to another via one relationship. Single source. Entities are short-form verbatim terms.",
       "queries": [
         {
           "id": "L2Q1",
-          "query": "How does the Arduino UNO R3 communicate using I2C?",
+          "query": "How does the Arduino UNO R3 use I2C with SDA and SCL pins?",
           "category": "communication_protocol",
-          "expected_entities": ["Arduino UNO R3", "I2C", "SDA", "SCL", "A4", "A5"],
-          "expected_relations": ["USES_PROTOCOL", "COMMUNICATES_VIA", "PIN_FUNCTION"],
+          "expected_entities": [
+            "I2C",
+            "SDA",
+            "SCL",
+            "A4",
+            "A5"
+          ],
+          "expected_relations": [
+            "USES_PROTOCOL",
+            "PIN_FUNCTION"
+          ],
           "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [11, 11],
+          "expected_page_range": [
+            10,
+            12
+          ],
           "retrieval_type": "vector_and_graph",
           "answer_type": "protocol_explanation",
-          "ground_truth": "The Arduino UNO R3 supports I2C communication via its A4/SDA (data line) and A5/SCL (clock line) pins. It features a dual mode controller/peripheral I2C interface on the ATmega328P.",
-          "metadata_tags": ["I2C", "SDA", "SCL", "communication", "protocol", "pins", "A4", "A5"]
+          "ground_truth": "Arduino UNO R3 uses I2C via pins A4 (SDA) and A5 (SCL) on the ATmega328P.",
+          "metadata_tags": [
+            "I2C",
+            "SDA",
+            "SCL",
+            "A4",
+            "A5",
+            "Arduino"
+          ]
         },
         {
           "id": "L2Q2",
           "query": "What is the relationship between a ROS node and a topic?",
           "category": "ros_architecture",
-          "expected_entities": ["ROS Node", "Topic", "Publisher", "Subscriber"],
-          "expected_relations": ["PUBLISHES_TO", "SUBSCRIBES_TO", "COMMUNICATES_VIA"],
-          "expected_source": "Programming.Robots.with.ROS.pdf",
-          "expected_page_range": [20, 50],
+          "expected_entities": [
+            "ROS",
+            "node",
+            "topic",
+            "publisher"
+          ],
+          "expected_relations": [
+            "PUBLISHES_TO",
+            "SUBSCRIBES_TO"
+          ],
+          "expected_source": "Programming.Robots.with.ROS.A.Practical.Introduction.to.the.Robot.Operating.System.pdf",
+          "expected_page_range": [
+            20,
+            50
+          ],
           "retrieval_type": "vector_and_graph",
           "answer_type": "relationship_explanation",
-          "ground_truth": "In ROS, nodes communicate with each other via topics using a publish-subscribe model. A node can publish messages to a topic, and other nodes can subscribe to that topic to receive those messages.",
-          "metadata_tags": ["ROS", "node", "topic", "publish", "subscribe", "architecture", "communication"]
+          "ground_truth": "A ROS node communicates by publishing messages to a topic or subscribing to receive messages from a topic.",
+          "metadata_tags": [
+            "ROS",
+            "node",
+            "topic",
+            "publish",
+            "subscribe"
+          ]
         },
         {
           "id": "L2Q3",
-          "query": "How does SPI work on the Arduino UNO R3?",
-          "category": "communication_protocol",
-          "expected_entities": ["Arduino UNO R3", "SPI", "MOSI", "MISO", "SCK", "SS"],
-          "expected_relations": ["USES_PROTOCOL", "HAS_PIN", "SPI_PINS"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [11, 11],
+          "query": "How does the L298N H-bridge control DC motor direction using IN1 and IN2?",
+          "category": "hardware_control",
+          "expected_entities": [
+            "L298N",
+            "IN1",
+            "IN2",
+            "motor"
+          ],
+          "expected_relations": [
+            "CONTROLS",
+            "SETS_DIRECTION"
+          ],
+          "expected_source": "L298N Motor Driver.pdf",
+          "expected_page_range": [
+            1,
+            8
+          ],
           "retrieval_type": "vector_and_graph",
-          "answer_type": "protocol_explanation",
-          "ground_truth": "The Arduino UNO R3 supports SPI via dedicated pins: SS (chip select), MOSI (main out secondary in), MISO (main in secondary out), and SCK (serial clock output). The ATmega328P has one controller/peripheral SPI interface.",
-          "metadata_tags": ["SPI", "MOSI", "MISO", "SCK", "SS", "serial", "protocol", "pins"]
+          "answer_type": "control_explanation",
+          "ground_truth": "The L298N uses IN1 and IN2 logic inputs to set motor direction. IN1 HIGH IN2 LOW spins forward, IN1 LOW IN2 HIGH spins reverse.",
+          "metadata_tags": [
+            "L298N",
+            "H-bridge",
+            "IN1",
+            "IN2",
+            "direction"
+          ]
         },
         {
           "id": "L2Q4",
-          "query": "What is the relationship between automation and robotics?",
-          "category": "domain_concept",
-          "expected_entities": ["Automation", "Robotics", "Robot", "Control System"],
-          "expected_relations": ["IS_PART_OF", "ENABLES", "USES"],
-          "expected_source": "ROBOTICS_AND_AUTOMATION_1_.pdf",
-          "expected_page_range": [1, 20],
+          "query": "How does the Arduino UNO R3 get powered through VIN and USB?",
+          "category": "power_system",
+          "expected_entities": [
+            "VIN",
+            "USB",
+            "5V",
+            "LDO"
+          ],
+          "expected_relations": [
+            "POWERED_BY",
+            "REGULATES_TO"
+          ],
+          "expected_source": "ARDUINO.pdf",
+          "expected_page_range": [
+            6,
+            8
+          ],
           "retrieval_type": "vector_and_graph",
-          "answer_type": "conceptual_relationship",
-          "ground_truth": "Robotics is a branch of automation that deals with the design, construction, operation, and application of robots. Automation refers to the use of control systems to operate equipment with minimal human intervention, while robotics specifically involves programmable machines that can perform tasks autonomously.",
-          "metadata_tags": ["automation", "robotics", "control", "definition", "relationship", "domain"]
+          "answer_type": "system_explanation",
+          "ground_truth": "Arduino UNO R3 can be powered via VIN (6-20V through LDO regulator) or USB (5V), both providing a regulated 5V rail.",
+          "metadata_tags": [
+            "power",
+            "VIN",
+            "USB",
+            "LDO",
+            "5V"
+          ]
         },
         {
           "id": "L2Q5",
-          "query": "How does the Arduino UNO R3 get powered?",
-          "category": "power_system",
-          "expected_entities": ["Arduino UNO R3", "VIN", "USB", "LDO", "5V", "3.3V"],
-          "expected_relations": ["POWERED_BY", "REGULATES_TO", "POWER_SOURCE"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [6, 8],
+          "query": "How do you publish a ROS topic from Arduino using rosserial NodeHandle?",
+          "category": "ros_arduino_integration",
+          "expected_entities": [
+            "rosserial",
+            "NodeHandle",
+            "publisher",
+            "Arduino"
+          ],
+          "expected_relations": [
+            "USES",
+            "PUBLISHES_TO"
+          ],
+          "expected_source": "rosserial - ROS Wiki.pdf",
+          "expected_page_range": [
+            1,
+            10
+          ],
           "retrieval_type": "vector_and_graph",
-          "answer_type": "system_explanation",
-          "ground_truth": "The Arduino UNO R3 can be powered via the VIN pad (6-20V input through LDO regulator) or via USB connector (max 5.5V through OPAMP). Both paths provide regulated +5V to the ATmega328P (410mA) and ATmega16U2 (261mA), with a secondary LDO providing +3.3V.",
-          "metadata_tags": ["power", "VIN", "USB", "LDO", "voltage", "regulator", "5V", "3.3V", "power_tree"]
+          "answer_type": "procedure_explanation",
+          "ground_truth": "Declare a NodeHandle and Publisher, call nh.initNode() and nh.advertise(), then call publisher.publish() and nh.spinOnce() in the loop.",
+          "metadata_tags": [
+            "rosserial",
+            "Publisher",
+            "NodeHandle",
+            "Arduino",
+            "topic"
+          ]
         }
       ]
     },
-
     "level_3": {
       "label": "Multi-Entity Cross-Relationship",
-      "description": "Two or more entities connected across multiple relationships. Both vector and graph fire. Requires understanding how components interact across the system.",
+      "description": "Two or more entities, single source. SOURCE_HINTS keywords embedded in query.",
       "queries": [
         {
           "id": "L3Q1",
-          "query": "How does ROS communicate with the Arduino UNO R3 to control hardware?",
+          "query": "How does rosserial let ROS communicate with Arduino over serial USB?",
           "category": "system_integration",
-          "expected_entities": ["ROS", "Arduino UNO R3", "rosserial", "ATmega328P", "Serial", "Topic"],
-          "expected_relations": ["COMMUNICATES_WITH", "USES_PROTOCOL", "CONTROLS", "INTERFACES_WITH"],
-          "expected_source": "Programming.Robots.with.ROS.pdf",
-          "expected_page_range": [30, 80],
+          "expected_entities": [
+            "rosserial",
+            "ROS",
+            "Arduino",
+            "serial"
+          ],
+          "expected_relations": [
+            "COMMUNICATES_WITH",
+            "USES_PROTOCOL"
+          ],
+          "expected_source": "rosserial - ROS Wiki.pdf",
+          "expected_page_range": [
+            1,
+            15
+          ],
           "retrieval_type": "vector_and_graph",
           "answer_type": "integration_explanation",
-          "ground_truth": "ROS communicates with Arduino via the rosserial package, which runs a ROS node on the Arduino itself. The Arduino connects to the host computer via USB serial, and rosserial translates ROS messages (topics) into serial communication the ATmega328P can understand, allowing ROS to send commands and receive sensor data.",
-          "metadata_tags": ["ROS", "Arduino", "rosserial", "serial", "USB", "integration", "communication", "topics"]
+          "ground_truth": "rosserial translates ROS topic messages into serial data over USB so the Arduino ATmega328P can read them as ROS messages.",
+          "metadata_tags": [
+            "ROS",
+            "Arduino",
+            "rosserial",
+            "serial",
+            "USB"
+          ]
         },
         {
           "id": "L3Q2",
-          "query": "What is the relationship between the ATmega328P, PWM pins and motor control on Arduino?",
+          "query": "How does the ATmega328P generate PWM signals using Timer peripherals for motor control?",
           "category": "hardware_control",
-          "expected_entities": ["ATmega328P", "PWM", "Motor", "Timer", "Digital Pin"],
-          "expected_relations": ["CONTROLS_VIA", "GENERATES", "USES", "CONNECTED_TO"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [2, 11],
+          "expected_entities": [
+            "ATmega328P",
+            "PWM",
+            "Timer",
+            "motor"
+          ],
+          "expected_relations": [
+            "GENERATES",
+            "CONTROLS_VIA"
+          ],
+          "expected_source": "Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf",
+          "expected_page_range": [
+            2,
+            11
+          ],
           "retrieval_type": "vector_and_graph",
           "answer_type": "technical_chain",
-          "ground_truth": "The ATmega328P generates PWM signals via its Timer/Counter peripherals (2x 8-bit and 1x 16-bit). These PWM signals are output through six dedicated PWM channels on digital pins, which can be used to control motor speed by varying the duty cycle sent to a motor driver.",
-          "metadata_tags": ["ATmega328P", "PWM", "timer", "motor_control", "duty_cycle", "digital_pins", "hardware"]
+          "ground_truth": "ATmega328P Timer/Counter peripherals generate PWM signals on six digital pins. Varying the duty cycle controls motor speed via a motor driver.",
+          "metadata_tags": [
+            "ATmega328P",
+            "PWM",
+            "timer",
+            "motor_control"
+          ]
         },
         {
           "id": "L3Q3",
-          "query": "How do sensors send data to a ROS system through Arduino?",
-          "category": "sensor_integration",
-          "expected_entities": ["Sensor", "Arduino UNO R3", "ROS", "rosserial", "Topic", "Analog Pin"],
-          "expected_relations": ["SENDS_DATA_TO", "PUBLISHES_TO", "READS_FROM", "CONNECTED_TO"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf"],
-          "expected_page_range": [11, 50],
+          "query": "How does the Arduino I2C interface on pins A4 SDA and A5 SCL connect to sensors?",
+          "category": "sensor_communication",
+          "expected_entities": [
+            "I2C",
+            "SDA",
+            "SCL",
+            "A4",
+            "A5"
+          ],
+          "expected_relations": [
+            "CONNECTS_TO",
+            "READS_FROM"
+          ],
+          "expected_source": "ARDUINO.pdf",
+          "expected_page_range": [
+            10,
+            12
+          ],
           "retrieval_type": "vector_and_graph",
-          "answer_type": "data_flow_explanation",
-          "ground_truth": "Sensors connect to Arduino analog (A0-A5) or digital pins, the Arduino reads sensor values and publishes them as ROS messages via rosserial over USB serial. These messages are received by a ROS node on the host computer as topic messages, making sensor data available to the entire ROS system.",
-          "metadata_tags": ["sensor", "Arduino", "ROS", "analog", "rosserial", "topic", "data_flow", "A0", "A5"]
+          "answer_type": "connection_explanation",
+          "ground_truth": "Arduino connects to sensors via I2C using A4 (SDA) and A5 (SCL). Multiple sensors share the bus and are addressed individually.",
+          "metadata_tags": [
+            "I2C",
+            "SDA",
+            "SCL",
+            "A4",
+            "A5",
+            "sensor",
+            "Arduino"
+          ]
         },
         {
           "id": "L3Q4",
-          "query": "What are the different types of robots and what control systems do they use?",
-          "category": "robot_classification",
-          "expected_entities": ["Robot", "Control System", "Actuator", "Sensor", "Manipulator", "Mobile Robot"],
-          "expected_relations": ["CLASSIFIED_AS", "USES_CONTROL", "EQUIPPED_WITH", "CONTROLLED_BY"],
-          "expected_source": "ROBOTICS_AND_AUTOMATION_1_.pdf",
-          "expected_page_range": [1, 40],
+          "query": "How does Arduino control a DC motor speed and direction using the L298N driver PWM ENA IN1 IN2?",
+          "category": "motor_control_chain",
+          "expected_entities": [
+            "Arduino",
+            "L298N",
+            "PWM",
+            "IN1",
+            "IN2"
+          ],
+          "expected_relations": [
+            "CONTROLS",
+            "DRIVES"
+          ],
+          "expected_source": "L298N Motor Driver.pdf",
+          "expected_page_range": [
+            1,
+            10
+          ],
           "retrieval_type": "vector_and_graph",
-          "answer_type": "classification_with_relationships",
-          "ground_truth": "Robots are classified as manipulators (fixed-base robotic arms), mobile robots (wheeled, legged, aerial), and collaborative robots. Each uses feedback control systems combining sensors (position, force, vision) with actuators (DC motors, servo motors, stepper motors) managed by a controller.",
-          "metadata_tags": ["robot", "classification", "manipulator", "mobile", "control_system", "actuator", "sensor"]
+          "answer_type": "control_chain",
+          "ground_truth": "Arduino sends PWM to L298N ENA pin to set speed and digital signals to IN1/IN2 to set direction. L298N H-bridge switches current to drive the DC motor.",
+          "metadata_tags": [
+            "Arduino",
+            "L298N",
+            "PWM",
+            "ENA",
+            "motor",
+            "H-bridge"
+          ]
         },
         {
           "id": "L3Q5",
-          "query": "How does the I2C protocol on Arduino UNO R3 connect to external sensors like an IMU?",
-          "category": "sensor_communication",
-          "expected_entities": ["Arduino UNO R3", "I2C", "IMU", "A4/SDA", "A5/SCL", "ATmega328P"],
-          "expected_relations": ["CONNECTS_TO", "USES_PROTOCOL", "READS_FROM", "COMMUNICATES_VIA"],
-          "expected_source": ["ARDUINO.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
-          "expected_page_range": [11, 11],
+          "query": "What types of robots and actuators are used in robotics and automation systems?",
+          "category": "robot_classification",
+          "expected_entities": [
+            "robot",
+            "actuator",
+            "sensor",
+            "automation"
+          ],
+          "expected_relations": [
+            "CLASSIFIED_AS",
+            "USES"
+          ],
+          "expected_source": "ROBOTICS AND AUTOMATION(1).pdf",
+          "expected_page_range": [
+            1,
+            40
+          ],
           "retrieval_type": "vector_and_graph",
-          "answer_type": "connection_explanation",
-          "ground_truth": "The Arduino UNO R3 connects to IMU sensors via I2C using pins A4 (SDA - data) and A5 (SCL - clock). The ATmega328P's dual-mode I2C controller manages the communication, allowing the Arduino to read orientation, acceleration, and gyroscope data from the IMU at addresses configured on the bus.",
-          "metadata_tags": ["I2C", "IMU", "SDA", "SCL", "A4", "A5", "sensor", "ATmega328P", "communication"]
+          "answer_type": "classification_explanation",
+          "ground_truth": "Robots include manipulators and mobile robots. Both use actuators such as DC motors, servo motors, and stepper motors controlled by feedback systems.",
+          "metadata_tags": [
+            "robot",
+            "manipulator",
+            "mobile",
+            "actuator",
+            "servo",
+            "automation"
+          ]
         }
       ]
     },
-
     "level_4": {
       "label": "Multi-hop Chain Reasoning",
-      "description": "Requires traversing 3+ entities across multiple document sources. Graph multi-hop traversal is essential. Vector retrieval alone would miss the full chain.",
+      "description": "3+ entities, at most two sources. SOURCE_HINTS keywords in query. Atmel datasheet accepted for chip-level queries.",
       "queries": [
         {
           "id": "L4Q1",
-          "query": "Trace the complete data flow from a sensor connected to Arduino UNO R3 to a ROS-controlled motor output.",
-          "category": "full_system_pipeline",
-          "expected_entities": ["Sensor", "Arduino UNO R3", "ATmega328P", "rosserial", "ROS Node", "Topic", "Motor Driver", "DC Motor", "PWM"],
-          "expected_relations": ["READS_FROM", "PROCESSES_VIA", "PUBLISHES_TO", "SUBSCRIBES_TO", "SENDS_COMMAND_TO", "CONTROLS_VIA", "DRIVES"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
-          "expected_page_range": [1, 100],
+          "query": "How does Arduino read an analog sensor and publish the data to ROS using rosserial over serial?",
+          "category": "sensor_to_ros_pipeline",
+          "expected_entities": [
+            "Arduino",
+            "rosserial",
+            "ROS",
+            "serial",
+            "topic"
+          ],
+          "expected_relations": [
+            "READS_FROM",
+            "PUBLISHES_TO",
+            "COMMUNICATES_VIA"
+          ],
+          "expected_source": [
+            "ARDUINO.pdf",
+            "rosserial - ROS Wiki.pdf",
+            "Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf"
+          ],
+          "expected_page_range": [
+            1,
+            50
+          ],
           "retrieval_type": "vector_and_graph_multihop",
-          "answer_type": "end_to_end_pipeline",
-          "ground_truth": "1. Sensor → Arduino (A0-A5 analog or digital pins) → ATmega328P reads value. 2. ATmega328P → rosserial → USB serial → ROS host. 3. ROS node receives sensor data as topic message. 4. ROS controller processes data, publishes command to cmd_vel or motor topic. 5. rosserial delivers command back to Arduino. 6. ATmega328P generates PWM on digital pins → Motor driver → DC motor speed/direction controlled.",
-          "metadata_tags": ["pipeline", "sensor", "Arduino", "ROS", "rosserial", "PWM", "motor", "data_flow", "end_to_end", "multihop"]
+          "answer_type": "pipeline_explanation",
+          "ground_truth": "Arduino reads sensor on analog pins A0-A5. ATmega328P passes data to rosserial which serialises it over USB serial. A ROS node on the host receives it as a topic message.",
+          "metadata_tags": [
+            "sensor",
+            "Arduino",
+            "rosserial",
+            "ROS",
+            "topic",
+            "serial"
+          ]
         },
         {
           "id": "L4Q2",
-          "query": "How does the Arduino UNO R3 power system support running both the processor and connected sensors and actuators simultaneously?",
+          "query": "How does the Arduino VIN power input regulate voltage through LDO to supply 5V and 3.3V rails?",
           "category": "power_distribution",
-          "expected_entities": ["VIN", "LDO", "5V rail", "ATmega328P", "ATmega16U2", "3.3V rail", "Sensor", "Actuator"],
-          "expected_relations": ["REGULATED_BY", "POWERS", "SUPPLIES_TO", "DRAWS_FROM", "CONNECTED_TO"],
-          "expected_source": "ARDUINO.pdf",
-          "expected_page_range": [6, 8],
+          "expected_entities": [
+            "VIN",
+            "LDO",
+            "5V",
+            "ATmega328P",
+            "3.3V"
+          ],
+          "expected_relations": [
+            "REGULATED_BY",
+            "POWERS",
+            "SUPPLIES_TO"
+          ],
+          "expected_source": [
+            "ARDUINO.pdf",
+            "Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf"
+          ],
+          "expected_page_range": [
+            6,
+            8
+          ],
           "retrieval_type": "vector_and_graph_multihop",
           "answer_type": "system_analysis",
-          "ground_truth": "VIN (6-20V) passes through the LDO regulator to produce +5V rail. USBVCC passes through OPAMP to join the +5V rail. The +5V rail powers: ATmega328P (410mA), ATmega16U2 (261mA), Green LED (5.6mA), Yellow LEDs (8.7mA). A secondary LDO produces +3.3V for 3.3V sensors. Total budget must stay within the regulator limits — leaving headroom for external sensors and small actuators connected to the 5V and 3.3V rails.",
-          "metadata_tags": ["power", "LDO", "5V", "3.3V", "ATmega328P", "power_budget", "rail", "sensor", "actuator"]
+          "ground_truth": "VIN passes through an LDO to produce a 5V rail powering the ATmega328P. A secondary LDO produces 3.3V for sensors. Total draw must stay within regulator limits.",
+          "metadata_tags": [
+            "power",
+            "LDO",
+            "5V",
+            "3.3V",
+            "ATmega328P",
+            "VIN"
+          ]
         },
         {
           "id": "L4Q3",
-          "query": "What is the complete communication chain from a ROS master to a physical robot joint movement?",
-          "category": "ros_to_physical",
-          "expected_entities": ["ROS Master", "ROS Node", "Topic", "rosserial", "Arduino UNO R3", "PWM", "Motor Driver", "Servo Motor", "Joint"],
-          "expected_relations": ["REGISTERS_WITH", "PUBLISHES_TO", "SUBSCRIBES_TO", "FORWARDS_TO", "GENERATES", "DRIVES", "MOVES"],
-          "expected_source": ["Programming.Robots.with.ROS.pdf", "ARDUINO.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
-          "expected_page_range": [20, 100],
+          "query": "How does the L298N H-bridge receive PWM and IN1 IN2 signals from Arduino to drive a DC motor forward and reverse?",
+          "category": "ros_to_motor_chain",
+          "expected_entities": [
+            "L298N",
+            "PWM",
+            "IN1",
+            "IN2",
+            "motor"
+          ],
+          "expected_relations": [
+            "RECEIVES",
+            "DRIVES",
+            "CONTROLS"
+          ],
+          "expected_source": "L298N Motor Driver.pdf",
+          "expected_page_range": [
+            1,
+            10
+          ],
           "retrieval_type": "vector_and_graph_multihop",
           "answer_type": "chain_explanation",
-          "ground_truth": "ROS Master → registers all nodes and manages topic connections. Publisher node → publishes joint angle/velocity to /cmd_vel or /joint_states topic. rosserial subscriber node → receives message, forwards via USB serial to Arduino. ATmega328P → decodes command, generates PWM signal on appropriate pin. PWM → motor driver (H-bridge) → servo or DC motor → physical joint rotates to commanded position.",
-          "metadata_tags": ["ROS_master", "node", "topic", "rosserial", "Arduino", "PWM", "motor_driver", "servo", "joint", "chain"]
+          "ground_truth": "Arduino sends PWM to L298N ENA for speed control. IN1 HIGH IN2 LOW drives motor forward; IN1 LOW IN2 HIGH drives reverse. The H-bridge switches current direction through the motor.",
+          "metadata_tags": [
+            "L298N",
+            "PWM",
+            "IN1",
+            "IN2",
+            "H-bridge",
+            "motor"
+          ]
         },
         {
           "id": "L4Q4",
-          "query": "How do the degrees of freedom, actuators and sensors work together in a robotic arm controlled by Arduino and ROS?",
-          "category": "robotic_arm_system",
-          "expected_entities": ["Robotic Arm", "DOF", "Servo Motor", "Encoder", "Arduino UNO R3", "ROS", "Joint", "End Effector"],
-          "expected_relations": ["HAS_DOF", "ACTUATED_BY", "FEEDBACK_FROM", "CONTROLLED_BY", "CONNECTED_TO", "READS_POSITION_FROM"],
-          "expected_source": ["ROBOTICS_AND_AUTOMATION_1_.pdf", "Programming.Robots.with.ROS.pdf", "ARDUINO.pdf"],
-          "expected_page_range": [1, 80],
+          "query": "How does the ATmega328P use Timer peripherals and ADC to handle simultaneous PWM motor control and sensor reading?",
+          "category": "concurrent_io",
+          "expected_entities": [
+            "ATmega328P",
+            "Timer",
+            "PWM",
+            "ADC",
+            "interrupt"
+          ],
+          "expected_relations": [
+            "USES_TIMER",
+            "GENERATES_PWM",
+            "READS_ADC"
+          ],
+          "expected_source": [
+            "Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf",
+            "ARDUINO.pdf"
+          ],
+          "expected_page_range": [
+            2,
+            140
+          ],
           "retrieval_type": "vector_and_graph_multihop",
-          "answer_type": "system_integration_analysis",
-          "ground_truth": "A robotic arm with N degrees of freedom has N joints, each actuated by a servo or DC motor. Encoders on each joint send position feedback to Arduino (via analog or digital pins). Arduino runs a PID control loop, receiving target positions from ROS via rosserial. ROS handles high-level path planning and publishes joint targets as topics. The closed-loop: ROS plan → Arduino control → motor → encoder → Arduino → correction.",
-          "metadata_tags": ["robotic_arm", "DOF", "servo", "encoder", "PID", "ROS", "Arduino", "joint", "closed_loop", "feedback"]
+          "answer_type": "concurrent_system_analysis",
+          "ground_truth": "ATmega328P has 3 Timer/Counter peripherals generating up to 6 PWM channels independently. While timers run autonomously the CPU reads sensors via the 6-channel ADC and handles interrupts.",
+          "metadata_tags": [
+            "ATmega328P",
+            "timer",
+            "PWM",
+            "ADC",
+            "interrupt",
+            "concurrent"
+          ]
         },
         {
           "id": "L4Q5",
-          "query": "How does the ATmega328P handle multiple sensor inputs and generate multiple PWM outputs simultaneously for a multi-axis robot?",
-          "category": "concurrent_io",
-          "expected_entities": ["ATmega328P", "Timer", "PWM", "Analog Input", "Interrupt", "Sensor", "Motor", "ADC"],
-          "expected_relations": ["USES_TIMER", "GENERATES_PWM", "READS_ADC", "TRIGGERS_INTERRUPT", "CONTROLS_SIMULTANEOUSLY"],
-          "expected_source": ["ARDUINO.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
-          "expected_page_range": [2, 11],
+          "query": "How does rosserial use UART serial protocol to bridge Arduino NodeHandle and ROS topic messages?",
+          "category": "rosserial_protocol",
+          "expected_entities": [
+            "rosserial",
+            "UART",
+            "NodeHandle",
+            "ROS",
+            "topic"
+          ],
+          "expected_relations": [
+            "SERIALISES",
+            "COMMUNICATES_VIA",
+            "BRIDGES"
+          ],
+          "expected_source": "rosserial - ROS Wiki.pdf",
+          "expected_page_range": [
+            1,
+            20
+          ],
           "retrieval_type": "vector_and_graph_multihop",
-          "answer_type": "concurrent_system_analysis",
-          "ground_truth": "The ATmega328P handles concurrency via: 3 Timer/Counter peripherals generating up to 6 independent PWM channels simultaneously. 6 ADC channels (A0-A5) for analog sensor reading. Hardware interrupts on pin change for encoder feedback. The CPU runs a main loop reading sensors via ADC, while timers autonomously maintain PWM duty cycles. This allows simultaneous position sensing (ADC) and motor control (PWM) across multiple axes without blocking.",
-          "metadata_tags": ["ATmega328P", "timer", "PWM", "ADC", "interrupt", "concurrent", "multi_axis", "sensor", "motor"]
+          "answer_type": "protocol_chain",
+          "ground_truth": "rosserial serialises ROS messages into a byte stream sent over UART. The Arduino NodeHandle deserialises incoming messages and calls registered subscriber callbacks via nh.spinOnce().",
+          "metadata_tags": [
+            "rosserial",
+            "UART",
+            "NodeHandle",
+            "ROS",
+            "topic",
+            "serial"
+          ]
         }
       ]
     },
-
     "level_5": {
-      "label": "Cross-Document Synthesis + Inference",
-      "description": "Requires synthesising information from all 3 source documents simultaneously. Tests the full hybrid RAG pipeline — multi-hop graph + multi-source vector. Answer cannot be found in any single document.",
+      "label": "Cross-Document Synthesis",
+      "description": "Synthesises from two or three sources. All entities are short verbatim terms. KUKA isolated to single-source L1 only.",
       "queries": [
         {
           "id": "L5Q1",
-          "query": "Design a complete robotics system using Arduino UNO R3 and ROS for a 3-DOF robotic arm — what hardware, communication protocols, software components and control architecture are needed?",
-          "category": "system_design",
-          "expected_entities": ["Arduino UNO R3", "ROS", "Servo Motor", "Encoder", "I2C", "SPI", "rosserial", "ROS Node", "ATmega328P", "PWM", "Robot Arm", "DOF", "PID Controller"],
-          "expected_relations": ["REQUIRES", "COMMUNICATES_VIA", "CONTROLLED_BY", "USES_PROTOCOL", "SENDS_DATA_TO", "PUBLISHES_TO", "GENERATES", "INTEGRATES_WITH"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
+          "query": "How would you wire an Arduino UNO R3 to an L298N motor driver and control it with ROS using rosserial PWM commands?",
+          "category": "full_system_integration",
+          "expected_entities": [
+            "Arduino",
+            "L298N",
+            "PWM",
+            "rosserial",
+            "ROS"
+          ],
+          "expected_relations": [
+            "CONTROLS",
+            "RECEIVES_FROM",
+            "DRIVES"
+          ],
+          "expected_source": [
+            "ARDUINO.pdf",
+            "L298N Motor Driver.pdf",
+            "rosserial - ROS Wiki.pdf"
+          ],
           "expected_page_range": "multi_source",
           "retrieval_type": "vector_and_graph_multihop_crossdoc",
-          "answer_type": "system_design_synthesis",
-          "ground_truth": "Hardware: Arduino UNO R3 (ATmega328P), 3x servo motors on PWM pins (D9, D10, D11), encoders on analog pins (A0-A2), IMU via I2C (A4/SDA, A5/SCL). Communication: rosserial over USB serial (Arduino↔ROS), I2C for IMU. ROS components: rosserial_arduino node, joint_state_publisher, robot_state_publisher, MoveIt motion planner. Control: PID loops on Arduino for each joint, high-level trajectory planning in ROS. Power: VIN or USB providing 5V rail for Arduino and sensors.",
-          "metadata_tags": ["system_design", "3DOF", "robotic_arm", "Arduino", "ROS", "servo", "encoder", "IMU", "rosserial", "PID", "MoveIt", "cross_document"]
+          "answer_type": "system_design",
+          "ground_truth": "Wire L298N IN1/IN2 to Arduino digital pins and ENA to a PWM pin. Arduino rosserial NodeHandle subscribes to cmd_vel. Map velocity to PWM duty cycle and set IN1/IN2 for direction.",
+          "metadata_tags": [
+            "Arduino",
+            "L298N",
+            "PWM",
+            "rosserial",
+            "cmd_vel",
+            "motor"
+          ]
         },
         {
           "id": "L5Q2",
-          "query": "How would you build an obstacle-avoidance mobile robot using Arduino UNO R3, ultrasonic sensors, and ROS navigation stack?",
-          "category": "mobile_robot_system",
-          "expected_entities": ["Arduino UNO R3", "Ultrasonic Sensor", "ROS Navigation Stack", "rosserial", "cmd_vel", "DC Motor", "Motor Driver", "PWM", "ATmega328P", "Digital Pin"],
-          "expected_relations": ["READS_FROM", "PUBLISHES_TO", "SUBSCRIBES_TO", "CONTROLS", "GENERATES", "DRIVES", "AVOIDS"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
-          "expected_page_range": "multi_source",
-          "retrieval_type": "vector_and_graph_multihop_crossdoc",
-          "answer_type": "system_design_synthesis",
-          "ground_truth": "Ultrasonic sensor → Arduino digital pins (trigger/echo) → ATmega328P measures distance. Arduino publishes /scan or /sonar topic via rosserial. ROS Navigation Stack consumes sensor data, runs obstacle avoidance algorithm, publishes /cmd_vel. rosserial delivers velocity commands to Arduino. ATmega328P maps velocity to PWM signals → motor driver H-bridge → DC motors control wheel speed and direction.",
-          "metadata_tags": ["mobile_robot", "obstacle_avoidance", "ultrasonic", "ROS_nav", "cmd_vel", "motor_driver", "Arduino", "navigation", "cross_document"]
-        },
-        {
-          "id": "L5Q3",
-          "query": "Compare the communication capabilities of the Arduino UNO R3 (UART, SPI, I2C) and explain how each would be used differently in a ROS-based robotics system.",
+          "query": "Compare how UART SPI and I2C are used differently on the Arduino UNO R3 in a ROS robotics system.",
           "category": "protocol_comparison",
-          "expected_entities": ["UART", "SPI", "I2C", "Arduino UNO R3", "ATmega328P", "ROS", "Sensor", "rosserial"],
-          "expected_relations": ["USES_PROTOCOL", "SUITED_FOR", "COMPARED_WITH", "ENABLES", "CONNECTS_TO"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf"],
+          "expected_entities": [
+            "UART",
+            "SPI",
+            "I2C",
+            "Arduino",
+            "rosserial"
+          ],
+          "expected_relations": [
+            "USES_PROTOCOL",
+            "SUITED_FOR",
+            "COMPARED_WITH"
+          ],
+          "expected_source": [
+            "ARDUINO.pdf",
+            "Programming.Robots.with.ROS.A.Practical.Introduction.to.the.Robot.Operating.System.pdf"
+          ],
           "expected_page_range": "multi_source",
           "retrieval_type": "vector_and_graph_multihop_crossdoc",
           "answer_type": "comparative_analysis",
-          "ground_truth": "UART (D0/D1): Used by rosserial for ROS↔Arduino communication over USB. Only one UART available on UNO so it is dedicated to rosserial. SPI (D10-D13): Fast 4-wire protocol for SD cards, displays, high-speed sensors. Not typically used with ROS directly but for peripheral storage or display. I2C (A4/A5): Multi-device 2-wire bus for sensors like IMU, barometer, compass. Multiple I2C devices share one bus — ideal for sensor arrays in a ROS robot.",
-          "metadata_tags": ["UART", "SPI", "I2C", "comparison", "rosserial", "ROS", "sensor", "protocol", "Arduino", "cross_document"]
+          "ground_truth": "UART (D0/D1) is used by rosserial for ROS-Arduino communication. SPI (D10-D13) connects fast peripherals. I2C (A4/A5) connects multiple sensors like IMUs on one shared bus.",
+          "metadata_tags": [
+            "UART",
+            "SPI",
+            "I2C",
+            "rosserial",
+            "ROS",
+            "Arduino"
+          ]
+        },
+        {
+          "id": "L5Q3",
+          "query": "What hardware and software components build a complete sensor to actuator pipeline with Arduino rosserial and ROS?",
+          "category": "full_pipeline_design",
+          "expected_entities": [
+            "Arduino",
+            "rosserial",
+            "ROS",
+            "PWM",
+            "sensor"
+          ],
+          "expected_relations": [
+            "READS_FROM",
+            "PUBLISHES_TO",
+            "DRIVES"
+          ],
+          "expected_source": [
+            "rosserial - ROS Wiki.pdf",
+            "ROBOTICS AND AUTOMATION(1).pdf"
+          ],
+          "expected_page_range": "multi_source",
+          "retrieval_type": "vector_and_graph_multihop_crossdoc",
+          "answer_type": "system_design_synthesis",
+          "ground_truth": "Hardware: Arduino UNO R3, sensor on analog pins, motor driver on PWM pins. Software: rosserial NodeHandle on Arduino, ROS node on host. Data flows sensor read to rosserial publish to ROS process to PWM actuator.",
+          "metadata_tags": [
+            "sensor",
+            "actuator",
+            "Arduino",
+            "rosserial",
+            "ROS",
+            "PWM",
+            "pipeline"
+          ]
         },
         {
           "id": "L5Q4",
-          "query": "What are the power, processing and I/O constraints of the Arduino UNO R3 that limit its role in a large ROS-based robotic system, and how is ROS used to overcome them?",
-          "category": "system_limitations_and_solutions",
-          "expected_entities": ["Arduino UNO R3", "ATmega328P", "ROS", "Processing Power", "Memory", "I/O Pins", "rosserial", "Host Computer"],
-          "expected_relations": ["LIMITED_BY", "OVERCOMES_VIA", "OFFLOADS_TO", "COMMUNICATES_WITH", "EXTENDS_CAPABILITY"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
+          "query": "What limits the Arduino ATmega328P memory and processing in a ROS system and how does rosserial overcome those limits?",
+          "category": "system_constraints",
+          "expected_entities": [
+            "ATmega328P",
+            "ROS",
+            "rosserial",
+            "memory",
+            "Arduino"
+          ],
+          "expected_relations": [
+            "LIMITED_BY",
+            "OVERCOMES_VIA",
+            "OFFLOADS_TO"
+          ],
+          "expected_source": [
+            "rosserial - ROS Wiki.pdf",
+            "Programming.Robots.with.ROS.A.Practical.Introduction.to.the.Robot.Operating.System.pdf"
+          ],
           "expected_page_range": "multi_source",
           "retrieval_type": "vector_and_graph_multihop_crossdoc",
-          "answer_type": "constraint_analysis_synthesis",
-          "ground_truth": "Arduino UNO R3 constraints: ATmega328P at 20MHz (low compute), 32kB Flash / 2kB SRAM (very limited memory), 14 digital + 6 analog pins (limited I/O), no OS or multithreading. ROS overcomes these by running computation-heavy tasks (path planning, vision, SLAM) on a host PC. Arduino handles only real-time low-level control (PWM, sensor ADC). rosserial bridges them — Arduino is a thin hardware abstraction layer, ROS is the intelligent brain.",
-          "metadata_tags": ["constraints", "ATmega328P", "memory", "processing", "ROS", "offloading", "rosserial", "SLAM", "architecture", "cross_document"]
+          "answer_type": "constraint_analysis",
+          "ground_truth": "ATmega328P has 32KB Flash and 2KB SRAM with no OS. ROS runs computation-heavy tasks on a host PC. rosserial bridges them over USB serial so Arduino only handles real-time low-level control.",
+          "metadata_tags": [
+            "ATmega328P",
+            "memory",
+            "ROS",
+            "rosserial",
+            "offloading",
+            "Arduino"
+          ]
         },
         {
           "id": "L5Q5",
-          "query": "How would the end-to-end latency and reliability of a ROS-Arduino robotic control system be affected by the choice of communication protocol, processor speed, and ROS topic frequency?",
-          "category": "performance_analysis",
-          "expected_entities": ["ROS", "Arduino UNO R3", "ATmega328P", "UART", "rosserial", "Topic", "PWM", "Latency", "Baud Rate"],
-          "expected_relations": ["AFFECTS_LATENCY", "LIMITS_FREQUENCY", "DETERMINES_RELIABILITY", "CONSTRAINED_BY", "OPTIMISED_BY"],
-          "expected_source": ["ARDUINO.pdf", "Programming.Robots.with.ROS.pdf", "ROBOTICS_AND_AUTOMATION_1_.pdf"],
+          "query": "How do robotics automation systems use sensors actuators and robot control together to perform automated tasks?",
+          "category": "robotics_system_synthesis",
+          "expected_entities": [
+            "robot",
+            "sensor",
+            "actuator",
+            "automation",
+            "control"
+          ],
+          "expected_relations": [
+            "USES",
+            "CONTROLLED_BY",
+            "PERFORMS"
+          ],
+          "expected_source": [
+            "ROBOTICS AND AUTOMATION(1).pdf",
+            "Programming.Robots.with.ROS.A.Practical.Introduction.to.the.Robot.Operating.System.pdf"
+          ],
           "expected_page_range": "multi_source",
           "retrieval_type": "vector_and_graph_multihop_crossdoc",
-          "answer_type": "performance_synthesis",
-          "ground_truth": "Latency path: ROS topic publish → rosserial serialization → UART baud rate (default 57600bps) → ATmega328P UART interrupt → deserialize → execute → PWM update. Bottlenecks: UART baud rate limits throughput, ATmega328P at 20MHz limits deserialization speed. Reliability: UART has no built-in error correction; rosserial adds checksums. Topic frequency must be below UART saturation point (~100Hz typical for simple messages). Higher baud rates (115200) and lower-payload messages improve latency and allow higher control frequencies.",
-          "metadata_tags": ["latency", "baud_rate", "UART", "rosserial", "topic_frequency", "ATmega328P", "performance", "reliability", "optimization", "cross_document"]
+          "answer_type": "synthesis",
+          "ground_truth": "Automation systems combine sensors to perceive the environment, a controller to process data, and actuators to execute movement. ROS provides middleware to connect these components in a modular reusable way.",
+          "metadata_tags": [
+            "robot",
+            "sensor",
+            "actuator",
+            "automation",
+            "control",
+            "ROS"
+          ]
         }
       ]
     }

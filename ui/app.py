@@ -61,7 +61,25 @@ def load_kg_retriever():
 
 def get_retriever():
     from retrieval.hybrid_retriever import HybridRetriever
-    return HybridRetriever(load_vector_store(), load_kg_retriever())
+    from embeddings.bm25_store import BM25Store
+    from retrieval.reranker import Reranker
+    vs = load_vector_store()
+    kg = load_kg_retriever()
+    # Load BM25
+    try:
+        from ingestion.document_loader import DocumentLoader
+        chunks = DocumentLoader().load_chunks()
+        bm25 = BM25Store.load(chunks)
+    except Exception as e:
+        import logging; logging.warning(f"BM25 not loaded: {e}")
+        bm25 = None
+    # Load reranker
+    try:
+        reranker = Reranker()
+    except Exception as e:
+        import logging; logging.warning(f"Reranker not loaded: {e}")
+        reranker = None
+    return HybridRetriever(vs, kg, bm25, reranker)
 
 def get_generator():
     from generation.answer_generator import AnswerGenerator
@@ -88,7 +106,9 @@ with st.sidebar:
     top_k_vec    = st.slider("Vector top-k",   1, 10, 5)
     top_k_graph  = st.slider("Graph top-k",    1, 20, 10)
     vec_weight   = st.slider("Vector weight",  0.0, 1.0, 0.6, 0.05)
-    show_sources = st.toggle("Show sources",   value=True)
+    show_sources  = st.toggle("Show sources",   value=True)
+    agentic_mode  = st.toggle("🤖 Agentic mode (ReAct)", value=False,
+                               help="LLM plans and iterates retrieval. Better for complex multi-hop queries. Slower.")
     show_triples = st.toggle("Show graph triples", value=True)
 
     st.divider()
@@ -155,6 +175,35 @@ if query := st.chat_input("Ask about robotics, electronics, ROS, Arduino… or j
                         if m["role"] in {"user", "assistant"}
                     ]
 
+                    # ── Agentic or standard retrieval ────────────────
+                    if agentic_mode:
+                        from retrieval.agent import ReactAgent
+                        from embeddings.vector_store import VectorStore
+                        from graph.kg_retriever import KGRetriever
+                        agent  = ReactAgent(load_vector_store(), load_kg_retriever())
+                        result = agent.run(query)
+                        # Display agent trace
+                        if result.steps:
+                            with st.expander(f"🧠 Agent reasoning ({result.iterations} steps)"):
+                                for i, step in enumerate(result.steps, 1):
+                                    st.markdown(f"**Step {i}**")
+                                    if step.thought:
+                                        st.caption(f"💭 {step.thought}")
+                                    if step.action != "finish":
+                                        st.code(f"{step.action}({step.action_input})", language=None)
+                                    if step.observation:
+                                        st.caption(f"👁 {step.observation[:200]}...")
+                        st.markdown(result.answer)
+                        if result.source_pages and show_sources:
+                            with st.expander(f"📄 Sources ({len(result.source_pages)} chunks)"):
+                                for sp in result.source_pages:
+                                    st.markdown(f"`[{sp['n']}]` **{sp['file']}** — page {sp['page']}")
+                        st.session_state.messages.append({
+                            "role": "assistant", "content": result.answer,
+                            "source_pages": result.source_pages, "sources": [],
+                            "triples": result.triples_used,
+                        })
+                        st.stop()
                     context = retriever.retrieve(query)
                     answer  = generator.generate(query, context, history)
 

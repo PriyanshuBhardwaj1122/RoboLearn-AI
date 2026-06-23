@@ -42,21 +42,23 @@ def run_full_pipeline(kg: bool = True, sample: int = 0) -> None:
 
 def run_kg_only(sample: int = 0) -> None:
     loader = DocumentLoader()
-    chunks = loader.load_chunks()
+    
+    # Load parent chunks for KG build — richer context per extraction call
+    parents = loader.load_parents()
+    chunks = list(parents.values())
     total = len(chunks)
 
     kg_chunks = chunks[:sample] if sample > 0 else chunks
 
     if sample:
-        logger.info(f"Sample mode: building KG from first {sample} of {total} chunks")
+        logger.info(f"Sample mode: building KG from first {sample} of {total} parent chunks")
     else:
-        logger.info(f"Building KG from all {total} chunks — this makes {total} Groq API calls")
-        logger.info("Tip: use --sample 100 to test with a subset first")
+        logger.info(f"Building KG from {total} parent chunks using Claude Sonnet")
 
     builder = KnowledgeGraphBuilder()
     builder.build_from_chunks(kg_chunks)
     builder.close()
-    logger.success(f"KG built from {len(kg_chunks)} chunks ✓")
+    logger.success(f"KG built from {len(kg_chunks)} parent chunks ✓")
 
 
 if __name__ == "__main__":
